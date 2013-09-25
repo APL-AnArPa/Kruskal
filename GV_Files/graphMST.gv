@@ -1,0 +1,31 @@
+graph G {
+// nodes
+run;
+intr;
+intro;
+runbl;
+kernel;
+zombie;
+sleep;
+runmem;
+swap;
+runswap;
+new;
+// edges
+run -- intr[label="50",style=dotted];
+intr -- runbl[label="30",color=blue];
+runbl -- run[label="23",color=blue];
+run -- kernel[label="46",color=blue];
+kernel -- zombie[label="12",color=blue];
+kernel -- sleep[label="67",style=dotted];
+kernel -- runmem[label="63",style=dotted];
+sleep -- swap[label="23",color=blue];
+swap -- runswap[label="45",color=blue];
+swap -- intro[label="45",color=blue];
+runswap -- new[label="50",style=dotted];
+runswap -- runmem[label="89",style=dotted];
+runswap -- runbl[label="89",style=dotted];
+new -- runmem[label="12",color=blue];
+sleep -- runmem[label="7",color=blue];
+zombie -- new[label="7",color=blue];
+}
