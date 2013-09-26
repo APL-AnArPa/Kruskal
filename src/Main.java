@@ -21,6 +21,9 @@ public class Main
 				//parse the *.gv input file to form a graph G
 				if(ReadGraphFile(G, args[0]))
 				{
+					//Spanning tree is generated only if Graph is connected
+					if(G.isConnected())
+					{
 					//run Kruskal's algorithm
 					Kruskal krObj = new Kruskal();
 					ArrayList<Edge> A = krObj.Kruskal_Algo(G);
@@ -28,6 +31,11 @@ public class Main
 					//Write to output file
 					WriteGraphFile(G, A, args[1]);
 					System.out.println("Minimum Spanning Tree successfully generated");
+					}
+					else
+					{
+						System.out.println("Graph is disconnected. Cannot generate spanning tree");
+					}
 				}
 			}
 			else
@@ -71,7 +79,7 @@ public class Main
 					}
 					else
 					{
-						//check for the begining of list of vertices
+						//check for the beginning of list of vertices
 						if(sInput.indexOf("// nodes") == -1)
 						{
 							isError = true;
@@ -110,8 +118,22 @@ public class Main
 						}
 						else
 						{
-							//add vertex to the graph if no errors
-							G.VertexList.add(new Vertex(sInput.substring(0, sInput.length() - 1)));
+							//check whether the current vertex is a duplicate of a previous vertex 
+							boolean isDuplicate = false;
+							for (Vertex v : G.VertexList) 
+							{
+								if(v.name.equals(sInput.substring(0, sInput.length() - 1)))
+								{
+									isDuplicate = true;
+									break;
+								}
+							}
+							
+							//add vertex to the graph if no errors and vertex is not duplicate
+							if(!isDuplicate)
+							{
+								G.VertexList.add(new Vertex(sInput.substring(0, sInput.length() - 1)));
+							}
 						}
 					}
 				}
@@ -150,7 +172,7 @@ public class Main
 									break;
 								}
 							}
-							//check if edge referes to undeclared vertices
+							//check if edge refers to undeclared vertices
 							if(!present1 || !present2)
 							{
 								isError = true;
