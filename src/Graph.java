@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 
+//Graph object contains list of vertices and edges
 public class Graph 
 {
 	ArrayList<Vertex> VertexList = new ArrayList<Vertex>();
