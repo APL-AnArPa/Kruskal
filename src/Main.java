@@ -13,13 +13,19 @@ public class Main
 	{
 		if(args.length == 2)
 		{
+			//check the input and output file formats
 			if(args[0].substring(args[0].length() - 3, args[0].length()).equals(".gv") && args[1].substring(args[1].length() - 3, args[1].length()).equals(".gv"))
 			{
 				Graph G = new Graph();
+				
+				//parse the *.gv input file to form a graph G
 				if(ReadGraphFile(G, args[0]))
 				{
+					//run Kruskal's algorithm
 					Kruskal krObj = new Kruskal();
 					ArrayList<Edge> A = krObj.Kruskal_Algo(G);
+					
+					//Write to output file
 					WriteGraphFile(G, A, args[1]);
 					System.out.println("Minimum Spanning Tree successfully generated");
 				}
@@ -35,6 +41,7 @@ public class Main
 		}
 	}
 	
+	//Parse the input *.gv file to for a graph G
 	public static boolean ReadGraphFile(Graph G, String inputFileName)
 	{
 		try
@@ -42,8 +49,8 @@ public class Main
 			FileReader fileReader = new FileReader(inputFileName);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String sInput;
-			boolean isNodes = false;
-			boolean isEdges = false;
+			boolean isNodes = false;	//isNode is true for a line that contains vertex information
+			boolean isEdges = false;	//isEdge is true for a line that contains edge information
 			int braceIndex = -1;
 			int noOfBraces = 0;
 			int count = 0;
@@ -54,6 +61,7 @@ public class Main
 				{
 					if(count == 0)
 					{
+						//Check for opening braces
 						if(sInput.indexOf("graph G {") == -1)
 						{
 							isError = true;
@@ -63,6 +71,7 @@ public class Main
 					}
 					else
 					{
+						//check for the begining of list of vertices
 						if(sInput.indexOf("// nodes") == -1)
 						{
 							isError = true;
@@ -101,12 +110,14 @@ public class Main
 						}
 						else
 						{
+							//add vertex to the graph if no errors
 							G.VertexList.add(new Vertex(sInput.substring(0, sInput.length() - 1)));
 						}
 					}
 				}
 				else
 				{
+					//check for closing braces
 					if(sInput.equals("}"))
 					{
 						braceIndex = count;
@@ -139,18 +150,21 @@ public class Main
 									break;
 								}
 							}
+							//check if edge referes to undeclared vertices
 							if(!present1 || !present2)
 							{
 								isError = true;
 								System.out.println("Error at line number " + (count + 1) + ". Edge contains undeclared node.");
 								break;
 							}
+							//check if edge weights are integers
 							if(!isInteger(sInput.substring(sInput.indexOf(" [label=\"") + 9, sInput.indexOf("\"];"))))
 							{
 								isError = true;
 								System.out.println("Error at line number " + (count + 1) + ". Edge weight is not numeric.");
 								break;
 							}
+							//add edge to the graph G if no errors
 							G.EdgeList.add(new Edge(vertex1, vertex2, 
 													Integer.parseInt(sInput.substring(sInput.indexOf(" [label=\"") + 9, sInput.indexOf("\"];")))));
 						}
@@ -187,6 +201,7 @@ public class Main
 		}
 	}
 	
+	//check if the number represented by string s is an integer or not
 	public static boolean isInteger(String s) 
 	{
 		if(s.isEmpty()) 
@@ -204,6 +219,7 @@ public class Main
 	    return true;
 	}
 	
+	//write a graph G to output *.gv file in the specified format
 	public static void WriteGraphFile(Graph G, ArrayList<Edge> A, String outputFileName)
 	{
 		try 
