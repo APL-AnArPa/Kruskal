@@ -1,36 +1,36 @@
 import java.util.ArrayList;
 
-
+//Implementation of MergeSort.
 public class Sort 
 {
 	public void MergeSort(ArrayList<Edge> A, int p, int q)
 	{
-		if(p < q)
+		if(p < q)                            //Check, there must be at least one element in A.
 		{
-			int mid = (p + q)/2;
-			MergeSort(A, p, mid);
-			MergeSort(A, mid + 1, q);
-			Merge(A, p, mid, q);
+			int mid = (p + q)/2;          //Find Mid, to devide A in to parts.
+			MergeSort(A, p, mid);         //Apply MergeSort on first half.
+			MergeSort(A, mid + 1, q);     //Aplly MergeSort on Second half.
+			Merge(A, p, mid, q);          //Merge two sorted sublists.
 		}
 	}
 	
-	private void Merge(ArrayList<Edge> A, int p, int q, int r)
+	private void Merge(ArrayList<Edge> A, int p, int q, int r)     //Implementation of Merge Procedure.
 	{
 		int n1, n2;
-		n1 = (q - p + 1);
-		n2 = r - q;
-		ArrayList<Edge> L = new ArrayList<Edge>();
+		n1 = (q - p + 1);   //Find size of first sublist.
+		n2 = r - q;        //Find size of second sublist.
+		ArrayList<Edge> L = new ArrayList<Edge>();  
 		ArrayList<Edge> R = new ArrayList<Edge>();
-		for(int i = 0; i < n1; i++)
+		for(int i = 0; i < n1; i++)   //Store first sublist in L.
 		{
 			L.add(new Edge(A.get(p + i).vertex1, A.get(p + i).vertex2, A.get(p + i).edgeWeight));
 		}
-		for(int i = 0; i < n2; i++)
+		for(int i = 0; i < n2; i++)    //Store second sublist in R.
 		{
 			R.add(new Edge(A.get(q + i + 1).vertex1, A.get(q + i + 1).vertex2, A.get(q + i + 1).edgeWeight));
 		}
 		int i = 0, j = 0, k;
-		for(k = p; k <= r; k++)
+		for(k = p; k <= r; k++)      //Merge to sorted sublist in a single list. 
 		{
 			if(i < n1 && j < n2)
 			{
