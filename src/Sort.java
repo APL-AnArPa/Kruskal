@@ -30,7 +30,7 @@ public class Sort
 			R.add(new Edge(A.get(q + i + 1).vertex1, A.get(q + i + 1).vertex2, A.get(q + i + 1).edgeWeight));
 		}
 		int i = 0, j = 0, k;
-		for(k = p; k <= r; k++)       
+		for(k = p; k <= r; k++)      //Merge to sorted sublist in a single list. 
 		{
 			if(i < n1 && j < n2)
 			{
